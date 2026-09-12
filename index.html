@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academia Python Espacial 🚀 - Motor Skulpt</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Skulpt Libraries for Real Python Execution -->
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+
+    <!-- Custom CSS for Cyber/Arcade styling -->
+    <style>
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: #0b0c10;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 40%);
+            color: #c5c6c7;
+            overflow-x: hidden;
+        }
+
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Neon Borders & Glows */
+        .neon-purple {
+            border: 1px solid rgba(168, 85, 247, 0.5);
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
+        }
+        .neon-cyan {
+            border: 1px solid rgba(6, 182, 212, 0.5);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+        }
+
+        /* Terminal styling */
+        #output {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Stars Background Effect */
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle linear infinite;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.2; transform: scale(0.8); }
+        }
+
+        /* Editor specific adjustments */
+        textarea:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+            border-color: #10b981;
+        }
+    
+    </style>
+
+</head>
+<body class="min-h-screen flex flex-col relative">
+
+    <!-- Background Stars Container -->
+    <div id="stars-container" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Top Navigation Header -->
+    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 px-4 py-3 shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3 z-10">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center text-white text-xl">
+                    <i class="fa-solid fa-rocket"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-300">
+                        Academia Python Espacial
+                    </h1>
+                    <p class="text-xs text-slate-400">Motor: Skulpt Python 3</p>
+                </div>
+            </div>
+
+            <!-- Gamification -->
+            <div class="flex items-center space-x-3 bg-slate-800/80 px-4 py-2 rounded-xl border border-slate-700 z-10">
+                <i class="fa-solid fa-star text-amber-400 animate-pulse"></i>
+                <span class="text-sm font-semibold text-slate-200">Misión Actual: <span id="mission-counter" class="text-amber-400">1</span>/4</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto w-full p-4 md:p-6 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-6 z-10 relative">
+
+        <!-- LEFT PANEL: Missions (4 cols) -->
+        <section class="lg:col-span-4 flex flex-col space-y-4">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl">
+                <h2 class="text-lg font-bold text-purple-300 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-map-location-dot"></i> Selecciona tu Misión
+                </h2>
+                <div class="space-y-3">
+                    <button onclick="loadMission(1)" class="w-full text-left p-3 rounded-xl neon-purple bg-slate-800/50 hover:bg-slate-700/80 transition-all flex items-center gap-3 group">
+                        <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold">1</div>
+                        <div>
+                            <div class="text-sm font-bold text-slate-200">¡Habla, Computadora!</div>
+                            <div class="text-xs text-slate-400">print() y variables</div>
+                        </div>
+                    </button>
+
+                    <button onclick="loadMission(2)" class="w-full text-left p-3 rounded-xl neon-cyan bg-slate-800/50 hover:bg-slate-700/80 transition-all flex items-center gap-3 group">
+                        <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold">2</div>
+                        <div>
+                            <div class="text-sm font-bold text-slate-200">La Varita Mágica</div>
+                            <div class="text-xs text-slate-400">Escucha con input()</div>
+                        </div>
+                    </button>
+
+                    <button onclick="loadMission(3)" class="w-full text-left p-3 rounded-xl border border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.2)] bg-slate-800/50 hover:bg-slate-700/80 transition-all flex items-center gap-3 group">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">3</div>
+                        <div>
+                            <div class="text-sm font-bold text-slate-200">El Portal (Decisiones)</div>
+                            <div class="text-xs text-slate-400">Comandos if / else</div>
+                        </div>
+                    </button>
+
+                    <button onclick="loadMission(4)" class="w-full text-left p-3 rounded-xl border border-amber-500/50 shadow-[0_0_10px_rgba(245,158,11,0.2)] bg-slate-800/50 hover:bg-slate-700/80 transition-all flex items-center gap-3 group">
+                        <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">4</div>
+                        <div>
+                            <div class="text-sm font-bold text-slate-200">Reto Final</div>
+                            <div class="text-xs text-slate-400">Adivina el número</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- RIGHT PANEL: Editor & Terminal (8 cols) -->
+        <section class="lg:col-span-8 flex flex-col space-y-4">
+            
+            <!-- Code Editor Box -->
+            <div class="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+                <div class="bg-slate-950 px-4 py-2 border-b border-slate-800 flex justify-between items-center">
+                    <span class="text-xs font-mono text-slate-400"><i class="fa-brands fa-python text-emerald-400 mr-1"></i> main.py</span>
+                </div>
+                
+                <textarea 
+                    id="yourcode" 
+                    class="w-full h-48 bg-[#1e1e24] text-slate-200 code-font text-sm p-4 resize-none border-b border-slate-800"
+                    spellcheck="false"
+                ></textarea>
+
+                <div class="bg-slate-900 p-3 flex justify-end">
+                    <button 
+                        onclick="runit()" 
+                        class="px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm shadow-[0_0_15px_rgba(16,185,129,0.4)] flex items-center gap-2 transition-transform active:scale-95"
+                    >
+                        <i class="fa-solid fa-play"></i> ¡Ejecutar Misión!
+                    </button>
+                </div>
+            </div>
+
+            <!-- Terminal Output -->
+            <div class="bg-black border border-slate-700 rounded-2xl shadow-2xl overflow-hidden flex-grow flex flex-col min-h-[250px] relative">
+                <div class="bg-slate-900 px-4 py-2 border-b border-slate-800 text-xs text-slate-400 font-mono flex items-center gap-2">
+                    <i class="fa-solid fa-terminal"></i> Terminal del Sistema
+                </div>
+                
+                <!-- Output Text Area -->
+                <pre id="output" class="p-4 text-emerald-400 code-font text-sm flex-grow overflow-y-auto m-0"></pre>
+
+                <!-- Interactive Input UI (Hidden until input() is called) -->
+                <div id="input-container" class="hidden absolute bottom-0 left-0 w-full bg-slate-900/95 border-t border-cyan-500 p-3 flex flex-col sm:flex-row items-center gap-3 shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
+                    <span id="prompt-text" class="text-cyan-300 font-bold text-sm code-font shrink-0"></span>
+                    <input 
+                        type="text" 
+                        id="userInput" 
+                        class="flex-grow w-full bg-black border border-cyan-500/50 rounded px-3 py-2 text-white code-font focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_10px_rgba(6,182,212,0.3)]"
+                        placeholder="Escribe aquí..."
+                    >
+                    <button 
+                        id="submitBtn"
+                        onclick="submitPythonInput()"
+                        class="w-full sm:w-auto px-5 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded shadow-lg transition-colors"
+                    >
+                        Enviar
+                    </button>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        // Mission Templates
+        const missions = {
+            1: 'print("Hola, superhéroe!")\nnombre = "Matías"\nprint("Hola " + nombre)',
+            2: 'color = input("¿Cuál es tu color favorito? ")\nprint("¡Rayo de luz " + color + "!")',
+            3: 'respuesta = input("¿Qué número sigue después del 10? ")\nif respuesta == "11":\n    print("¡Correcto!")\nelse:\n    print("¡Incorrecto!")',
+            4: 'secreto = "7"\nintento = input("Adivina el número (1-10): ")\nif intento == secreto:\n    print("¡Ganaste!")\nelse:\n    print("¡Casi! Era el 7.")'
+        };
+
+        // UI State
+        let resolveInputPromise = null;
+
+        // Initialize Background Stars
+        function createStars() {
+            const container = document.getElementById('stars-container');
+            for(let i=0; i<30; i++){
+                let star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(star);
+            }
+        }
+
+        // Load Mission into Editor
+        function loadMission(num) {
+            document.getElementById('yourcode').value = missions[num];
+            document.getElementById('mission-counter').innerText = num;
+            document.getElementById('output').innerText = 'Sistema listo. Código de misión ' + num + ' cargado.\nPresiona "¡Ejecutar Misión!" para comenzar.\n\n';
+            
+            // Clean up any pending inputs
+            hideInputUI();
+        }
+
+        // --- SKULPT CONFIGURATION & EXECUTION ---
+
+        // Function to handle standard output (print)
+        function builtinRead(x) {
+            if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined) {
+                throw "File not found: '" + x + "'";
+            }
+            return Sk.builtinFiles["files"][x];
+        }
+
+        function outf(text) {
+            const output = document.getElementById("output");
+            output.innerText += text;
+            output.scrollTop = output.scrollHeight; // Auto-scroll
+        }
+
+        // Crucial: Function to handle Python's input() synchronously using Promises
+        function customInputFun(prompt) {
+            return new Promise((resolve, reject) => {
+                // 1. Show the prompt in the terminal output
+                outf(prompt);
+                
+                // 2. Show the Input UI
+                const container = document.getElementById('input-container');
+                const promptLabel = document.getElementById('prompt-text');
+                const inputField = document.getElementById('userInput');
+                
+                container.classList.remove('hidden');
+                promptLabel.innerText = "Entrada requerida:"; 
+                inputField.value = '';
+                inputField.focus();
+
+                // 3. Store the resolve function globally so the Submit button can call it
+                resolveInputPromise = function() {
+                    const val = inputField.value;
+                    hideInputUI();
+                    
+                    // Echo the user's input to the terminal so it looks natural
+                    outf(val + "\n");
+                    
+                    // Resume Python execution
+                    resolveInputPromise = null;
+                    resolve(val);
+                };
+            });
+        }
+
+        function hideInputUI() {
+            document.getElementById('input-container').classList.add('hidden');
+            if(resolveInputPromise) {
+                // If forcefully hidden while waiting, resolve empty to prevent hang
+                resolveInputPromise = null;
+            }
+        }
+
+        // Linked to the HTML "Enviar" button
+        function submitPythonInput() {
+            if (resolveInputPromise) {
+                resolveInputPromise();
+            }
+        }
+
+        // Support pressing Enter to submit
+        document.getElementById('userInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                submitPythonInput();
+            }
+        });
+
+        // Run the code
+        function runit() {
+            let prog = document.getElementById("yourcode").value; 
+            let output = document.getElementById("output"); 
+            output.innerText = ''; // Clear output
+
+            // Configure Skulpt
+            Sk.pre = "output";
+            Sk.configure({
+                output: outf,
+                read: builtinRead,
+                inputfun: customInputFun,
+                inputfunTakesPrompt: true // Tells Skulpt to pass the string prompt to our function
+            }); 
+            
+            // Execute as an asynchronous Promise to support our input() delay
+            let myPromise = Sk.misceval.asyncToPromise(function() {
+                return Sk.importMainWithBody("<stdin>", false, prog, true);
+            });
+            
+            myPromise.then(function(mod) {
+                outf("\n\n[=== Programa Terminado con Éxito ===]");
+            }, function(err) {
+                outf("\n\n❌ ERROR: " + err.toString());
+            });
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            createStars();
+            loadMission(1);
+        };
+    
+    </script>
+
+</body>
+</html>
