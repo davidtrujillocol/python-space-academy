@@ -114,7 +114,7 @@
                         <div class="w-8 h-8 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center font-bold">5</div>
                         <div>
                             <div class="text-sm font-bold text-slate-200">Calculadora</div>
-                            <div class="text-xs text-slate-400">+ - * / % porcentaje y comparar (== &gt; &lt;)</div>
+                            <div class="text-xs text-slate-400">+ - * / % residuo y comparar (== &gt; &lt;)</div>
                         </div>
                     </button>
                 </div>
@@ -183,40 +183,45 @@
             5: [
                 'print("🧮 Calculadora Espacial")',
                 '',
+                'def num(x):',
+                '    if x == int(x):',
+                '        return str(int(x))',
+                '    return str(x)',
+                '',
                 'a = float(input("Ingresa el primer número: "))',
                 'b = float(input("Ingresa el segundo número: "))',
-                'op = input("¿Qué quieres hacer? ( +  -  *  /  %  porcentaje  ==  >  <  comparar ): ")',
+                'op = input("¿Qué quieres hacer? ( +  -  *  /  %  residuo  ==  >  <  comparar ): ")',
                 '',
                 'if op == "+":',
-                '    print(a, "+", b, "=", a + b)',
+                '    print(num(a) + " + " + num(b) + " = " + num(a + b))',
                 'elif op == "-":',
-                '    print(a, "-", b, "=", a - b)',
+                '    print(num(a) + " - " + num(b) + " = " + num(a - b))',
                 'elif op == "*":',
-                '    print(a, "*", b, "=", a * b)',
+                '    print(num(a) + " * " + num(b) + " = " + num(a * b))',
                 'elif op == "/":',
                 '    if b == 0:',
                 '        print("¡Alerta! No se puede dividir entre 0")',
                 '    else:',
-                '        print(a, "/", b, "=", a / b)',
+                '        print(num(a) + " / " + num(b) + " = " + num(a / b))',
                 'elif op == "%":',
+                '    print(num(a) + "% de " + num(b) + " es igual " + num(a * b / 100))',
+                'elif op == "residuo":',
                 '    if b == 0:',
                 '        print("¡Alerta! No se puede sacar residuo entre 0")',
                 '    else:',
-                '        print("Residuo de", a, "/", b, "=", a % b)',
-                'elif op == "porcentaje":',
-                '    print(str(a) + "% de " + str(b) + " = " + str(a * b / 100))',
+                '        print("Residuo de " + num(a) + " / " + num(b) + " = " + num(a % b))',
                 'elif op == "==":',
-                '    print(a, "==", b, "->", a == b)',
+                '    print(num(a) + " == " + num(b) + " -> " + str(a == b))',
                 'elif op == ">":',
-                '    print(a, ">", b, "->", a > b)',
+                '    print(num(a) + " > " + num(b) + " -> " + str(a > b))',
                 'elif op == "<":',
-                '    print(a, "<", b, "->", a < b)',
+                '    print(num(a) + " < " + num(b) + " -> " + str(a < b))',
                 'elif op == "comparar":',
-                '    print(a, "==", b, "->", a == b)',
-                '    print(a, ">", b, "->", a > b)',
-                '    print(a, "<", b, "->", a < b)',
+                '    print(num(a) + " == " + num(b) + " -> " + str(a == b))',
+                '    print(num(a) + " > " + num(b) + " -> " + str(a > b))',
+                '    print(num(a) + " < " + num(b) + " -> " + str(a < b))',
                 'else:',
-                '    print("Operación no válida. Usa: + - * / % porcentaje == > < comparar")'
+                '    print("Operación no válida. Usa: + - * / % residuo == > < comparar")'
             ].join("\n")
         };
 
